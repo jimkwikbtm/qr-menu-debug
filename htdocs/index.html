@@ -5619,6 +5619,18 @@
             margin-top: var(--spacing-24);
         }
         
+        .loading-indicator {
+            text-align: center;
+            padding: var(--spacing-48);
+            color: var(--uber-gray-600);
+        }
+        
+        .loading-indicator i {
+            font-size: var(--font-size-32);
+            margin-bottom: var(--spacing-16);
+            color: var(--uber-green);
+        }
+        
         .order-history-card {
             background-color: var(--uber-white);
             border-radius: var(--radius-12);
@@ -8198,7 +8210,9 @@
                         'search_menu': 'Search menu items...',
                         'order_not_found': 'Order Not Found',
                         'order_not_found_message': 'The order you are looking for could not be found.',
+                        'not_available': 'Not Available',
                         'view_order_history': 'View Order History',
+                        'loading_orders': 'Loading orders...',
                         'no_orders': 'No Orders Yet',
                         'no_orders_message': 'You haven\'t placed any orders yet.',
                         'placed_at': 'Placed At',
@@ -8388,7 +8402,9 @@
                         'search_menu': 'মেনু আইটেম খুঁজুন...',
                         'order_not_found': 'অর্ডার পাওয়া যায়নি',
                         'order_not_found_message': 'আপনি যে অর্ডারটি খুঁজছেন তা পাওয়া যায়নি।',
+                        'not_available': 'পাওয়া যায়নি',
                         'view_order_history': 'অর্ডার ইতিহাস দেখুন',
+                        'loading_orders': 'অর্ডার লোড হচ্ছে...',
                         'no_orders': 'এখনও কোনো অর্ডার নেই',
                         'no_orders_message': 'আপনি এখনও কোনো অর্ডার করেননি।',
                         'placed_at': 'স্থাপন করা হয়েছে',
@@ -9354,8 +9370,29 @@
                         apiService.getOrderItems(orderId)
                     ]);
                     
-                    const order = orderResponse.data || orderResponse;
+                    // Debug logging
+                    console.log('Order Response:', orderResponse);
+                    console.log('Items Response:', itemsResponse);
+                    
+                    const order = orderResponse.data ? orderResponse.data.order : null;
                     const items = itemsResponse.data || itemsResponse || [];
+                    
+                    console.log('Extracted Order:', order);
+                    console.log('Extracted Items:', items);
+                    
+                    if (!order) {
+                        console.error('Order data not found in response:', orderResponse);
+                        elements.orderTrackingContainer.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>${translate('order_not_found')}</h3>
+                                <p>Unable to load order data. Please try again.</p>
+                                <a href="#orders" class="btn">${translate('view_order_history')}</a>
+                            </div>
+                        `;
+                        document.getElementById('order-tracking-view').classList.remove('skeleton');
+                        return;
+                    }
                     
                     // Combine order and items data
                     const completeOrder = {
@@ -9363,7 +9400,7 @@
                         items: items
                     };
                     
-                    renderOrderTracking({ data: completeOrder });
+                    renderOrderTracking(completeOrder);
                 } catch (error) {
                     console.error('Failed to load order:', error);
                 }
@@ -11567,7 +11604,7 @@
                 
                 // Small delay to ensure skeleton is visible
                 setTimeout(() => {
-                    if (!order || !order.data) {
+                    if (!order) {
                         elements.orderTrackingContainer.innerHTML = `
                             <div class="empty-state">
                                 <i class="fas fa-receipt"></i>
@@ -11580,7 +11617,29 @@
                         return;
                     }
 
-                    const orderData = order.data;
+                    const orderData = order;
+                    
+                    // Validate required order data
+                    if (!orderData.order_uid) {
+                        console.error('Order UID is missing:', orderData);
+                        elements.orderTrackingContainer.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Invalid Order Data</h3>
+                                <p>Order ID is missing. Please try again.</p>
+                                <a href="#orders" class="btn">${translate('view_order_history')}</a>
+                            </div>
+                        `;
+                        document.getElementById('order-tracking-view').classList.remove('skeleton');
+                        return;
+                    }
+                    
+                    // Set default values for missing properties
+                    orderData.order_type = orderData.order_type || 'dine-in';
+                    orderData.status = orderData.status || 'pending';
+                    orderData.created_at = orderData.created_at || new Date().toISOString();
+                    orderData.items_subtotal = orderData.items_subtotal || 0;
+                    orderData.final_amount = orderData.final_amount || 0;
                     
                     // Define order type-specific status flows
                     const statusFlows = {
@@ -11674,7 +11733,7 @@
                                     </div>
                                     <div class="detail-item">
                                         <div class="detail-label">${translate('placed_at')}</div>
-                                        <div class="detail-value">${new Date(orderData.created_at).toLocaleString()}</div>
+                                        <div class="detail-value">${orderData.created_at ? new Date(orderData.created_at).toLocaleString() : translate('not_available')}</div>
                                     </div>
                                     ${orderData.branch_name ? `
                                     <div class="detail-item">
@@ -11732,7 +11791,7 @@
                                 <div class="order-summary">
                                     <div class="summary-row">
                                         <span>${translate('subtotal')}:</span>
-                                        <span>${formatPrice(orderData.items_subtotal)}</span>
+                                        <span>${formatPrice(orderData.items_subtotal || 0)}</span>
                                     </div>
                                     ${orderData.promo_id && orderData.discount_amount > 0 ? `
                                     <div class="summary-row discount-row">
@@ -11760,7 +11819,7 @@
                                     ` : ''}
                                     <div class="summary-row summary-total">
                                         <span>${translate('total')}:</span>
-                                        <span>${formatPrice(orderData.final_amount)}</span>
+                                        <span>${formatPrice(orderData.final_amount || 0)}</span>
                                     </div>
                                     
                                     <!-- Action Buttons -->
@@ -12371,7 +12430,7 @@
                 renderOrdersSkeleton();
                 
                 // Small delay to ensure skeleton is visible
-                setTimeout(() => {
+                setTimeout(async () => {
                     if (state.orderHistory.length === 0) {
                         const browseMenuUrl = state.currentBranch ? 
                             createBranchUrl(state.currentBranch, 'menu') : 
@@ -12390,23 +12449,74 @@
                         return;
                     }
 
+                    // Show loading indicator for fetching fresh data
+                    elements.orderHistoryContainer.innerHTML = `
+                        <div class="loading-indicator">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>${translate('loading_orders')}</p>
+                        </div>
+                    `;
+
+                    // Sort orders by date (newest first)
+                    const sortedOrders = [...state.orderHistory].sort((a, b) => {
+                        const dateA = new Date(a.date || a.created_at || 0);
+                        const dateB = new Date(b.date || b.created_at || 0);
+                        return dateB - dateA;
+                    });
+
+                    // Try to fetch fresh status for each order (with error handling)
+                    const updatedOrders = await Promise.all(sortedOrders.map(async (order) => {
+                        try {
+                            // Add a small delay between API calls to avoid overwhelming the server
+                            await new Promise(resolve => setTimeout(resolve, 100));
+                            
+                            const response = await apiService.getOrder(order.order_uid);
+                            const freshOrderData = response.data ? response.data.order : null;
+                            
+                            if (freshOrderData) {
+                                // Update the order in history with fresh data
+                                const orderIndex = state.orderHistory.findIndex(o => o.order_uid === order.order_uid);
+                                if (orderIndex !== -1) {
+                                    state.orderHistory[orderIndex] = {
+                                        ...state.orderHistory[orderIndex],
+                                        status: freshOrderData.status || order.status,
+                                        total: freshOrderData.final_amount || order.total || 0,
+                                        updated_at: freshOrderData.updated_at
+                                    };
+                                }
+                                return {
+                                    ...order,
+                                    status: freshOrderData.status || order.status,
+                                    total: freshOrderData.final_amount || order.total || 0
+                                };
+                            }
+                        } catch (error) {
+                            console.warn(`Failed to fetch fresh data for order ${order.order_uid}:`, error);
+                            // Return original order if API call fails
+                        }
+                        return order;
+                    }));
+
+                    // Save updated order history
+                    saveUserData();
+
                 const orderHistoryList = document.createElement('div');
                 orderHistoryList.className = 'order-history-list';
                 
-                state.orderHistory.forEach(order => {
+                updatedOrders.forEach(order => {
                     const orderCard = document.createElement('div');
                     orderCard.className = 'order-history-card';
                     orderCard.innerHTML = `
                         <div class="order-history-header">
                             <h3>${translate('order')} #${order.order_uid}</h3>
-                            <span class="order-date">${new Date(order.date).toLocaleDateString()}</span>
+                            <span class="order-date">${new Date(order.date || order.created_at).toLocaleDateString()}</span>
                         </div>
                         <div class="order-history-details">
                             <div class="order-status">
                                 <span class="status-badge ${order.status}">${translate(order.status)}</span>
                             </div>
                             <div class="order-total">
-                                ${formatPrice(order.total)}
+                                ${formatPrice(order.total || 0)}
                             </div>
                         </div>
                         <div class="order-history-actions">
