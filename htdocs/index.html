@@ -3493,8 +3493,8 @@
         }
         
         button.category-tab:hover .item-count {
-            background: var(--uber-green);
-            color: var(--uber-white);
+            background: var(--uber-white);
+            color: var(--uber-green);
         }
         
         button.category-tab.active .item-count {
@@ -6079,22 +6079,9 @@
                 font-size: var(--font-size-11);
             }
             
-            button.category-tab .item-count {
-                min-width: 20px;
-                height: 20px;
-                font-size: var(--font-size-9);
-                top: 8px;
-                right: -8px;
-                padding: 0 var(--spacing-6);
-                border-width: 1.5px;
-            }
             
-            button.category-tab.active .item-count {
-                top: -10px;
-                right: -10px;
-                min-width: 22px;
-                height: 22px;
-            }
+            
+            
             
             button.category-tab.new::after {
                 top: -8px;
@@ -6905,7 +6892,7 @@
             .modal {
                 max-width: 100%;
                 border-radius: 0;
-                height: 100vh;
+                height: auto;
             }
             
             .modal-header, .modal-body, .modal-footer {
@@ -6985,22 +6972,9 @@
                 font-size: var(--font-size-10);
             }
             
-            button.category-tab .item-count {
-                min-width: 18px;
-                height: 18px;
-                font-size: var(--font-size-8);
-                top: 10px;
-                right: -6px;
-                padding: 0 var(--spacing-6);
-                border-width: 1.5px;
-            }
             
-            button.category-tab.active .item-count {
-                top: -12px;
-                right: -12px;
-                min-width: 20px;
-                height: 20px;
-            }
+            
+            
             
             button.category-tab.new::after {
                 top: -10px;
@@ -7161,19 +7135,23 @@
             
             button.category-tab .item-count {
                 min-width: 16px;
-                height: 16px;
+                height: 0.1px;
                 font-size: var(--font-size-7);
                 top: 8px;
                 right: -4px;
                 padding: 0 var(--spacing-4);
                 border-width: 1px;
+				background: var(--uber-white);
+                color: var(--uber-green);
             }
             
             button.category-tab.active .item-count {
-                top: 10px;
-                right: -6px;
+                top: -0.1px;
+                right: -10px;
                 min-width: 18px;
                 height: 18px;
+				padding: 0 var(--spacing-4);
+                border-width: 1px;
             }
             
             button.category-tab.new::after {
@@ -7212,6 +7190,329 @@
             
             .category-tabs-container.sticky {
                 top: 64px;
+            }
+        }
+        
+        /* ===== ORDER TYPE SPECIFIC TRACKING ===== */
+        
+        /* Order Type Container Styles */
+        .order-tracking-type-dine-in {
+            --order-type-color: #06C167;
+            --order-type-icon: 'fa-utensils';
+            --order-type-bg-light: rgba(6, 193, 103, 0.1);
+            --order-type-border: rgba(6, 193, 103, 0.3);
+        }
+        
+        .order-tracking-type-takeaway {
+            --order-type-color: #0074E4;
+            --order-type-icon: 'fa-shopping-bag';
+            --order-type-bg-light: rgba(0, 116, 228, 0.1);
+            --order-type-border: rgba(0, 116, 228, 0.3);
+        }
+        
+        .order-tracking-type-delivery {
+            --order-type-color: #FF6B35;
+            --order-type-icon: 'fa-motorcycle';
+            --order-type-bg-light: rgba(255, 107, 53, 0.1);
+            --order-type-border: rgba(255, 107, 53, 0.3);
+        }
+        
+        /* Order Type Header */
+        .order-type-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            margin-bottom: var(--spacing-24);
+            padding: var(--spacing-16);
+            background: var(--uber-white);
+            border-radius: var(--radius-12);
+            box-shadow: var(--shadow-1);
+            border-left: 4px solid var(--order-type-color);
+        }
+        
+        .ot-order-type-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--order-type-bg-light);
+            color: var(--order-type-color);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-20);
+        }
+        
+        .order-type-info h3 {
+            font-size: var(--font-size-18);
+            font-weight: 600;
+            margin: 0 0 var(--spacing-4) 0;
+            color: var(--uber-gray-900);
+        }
+        
+        .order-type-info p {
+            font-size: var(--font-size-14);
+            color: var(--uber-gray-600);
+            margin: 0;
+        }
+        
+        /* Order Type Specific Status Flows */
+        .status-flow-dine-in {
+            --status-steps: 'pending', 'confirmed', 'preparing', 'ready', 'served', 'completed';
+        }
+        
+        .status-flow-takeaway {
+            --status-steps: 'pending', 'confirmed', 'preparing', 'ready', 'picked_up', 'completed';
+        }
+        
+        .status-flow-delivery {
+            --status-steps: 'pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'completed';
+        }
+        
+        .status-progress-custom {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: var(--spacing-32);
+            padding: 0 var(--spacing-8);
+        }
+        
+        .status-progress-custom::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: var(--uber-gray-300);
+            z-index: 1;
+        }
+        
+        .status-step-custom {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+        
+        .status-step-custom.completed .step-icon {
+            background: var(--order-type-color);
+            color: var(--uber-white);
+            border-color: var(--order-type-color);
+        }
+        
+        .status-step-custom.active .step-icon {
+            background: var(--order-type-color);
+            color: var(--uber-white);
+            border-color: var(--order-type-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-step-custom .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--uber-white);
+            border: 2px solid var(--uber-gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-14);
+            font-weight: 600;
+            color: var(--uber-gray-600);
+            transition: var(--transition-normal);
+            margin-bottom: var(--spacing-8);
+        }
+        
+        .status-step-custom .step-label {
+            font-size: var(--font-size-12);
+            color: var(--uber-gray-600);
+            text-align: center;
+            line-height: 1.3;
+        }
+        
+        .status-step-custom.completed .step-label,
+        .status-step-custom.active .step-label {
+            color: var(--order-type-color);
+            font-weight: 600;
+        }
+        
+        /* Order Type Specific Info Cards */
+        .order-type-info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .info-card {
+            background: var(--uber-white);
+            border-radius: var(--radius-12);
+            padding: var(--spacing-16);
+            box-shadow: var(--shadow-1);
+            border: 1px solid var(--order-type-border);
+        }
+        
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            margin-bottom: var(--spacing-12);
+        }
+        
+        .info-card-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--order-type-bg-light);
+            color: var(--order-type-color);
+            border-radius: var(--radius-8);
+            font-size: var(--font-size-16);
+        }
+        
+        .info-card-title {
+            font-size: var(--font-size-16);
+            font-weight: 600;
+            color: var(--uber-gray-900);
+            margin: 0;
+        }
+        
+        .info-card-content {
+            color: var(--uber-gray-700);
+            font-size: var(--font-size-14);
+            line-height: 1.5;
+        }
+        
+        .info-card-content strong {
+            color: var(--uber-gray-900);
+        }
+        
+        /* ETA Display */
+        .eta-display {
+            background: var(--order-type-bg-light);
+            border-radius: var(--radius-8);
+            padding: var(--spacing-12) var(--spacing-16);
+            margin-bottom: var(--spacing-16);
+            text-align: center;
+        }
+        
+        .eta-label {
+            font-size: var(--font-size-12);
+            color: var(--uber-gray-600);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .eta-time {
+            font-size: var(--font-size-18);
+            font-weight: 600;
+            color: var(--order-type-color);
+        }
+        
+        /* Action Buttons */
+        .order-type-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            margin-top: var(--spacing-24);
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-8);
+            padding: var(--spacing-12) var(--spacing-16);
+            border-radius: var(--radius-8);
+            border: none;
+            font-size: var(--font-size-14);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            text-decoration: none;
+        }
+        
+        .action-btn-primary {
+            background: var(--order-type-color);
+            color: var(--uber-white);
+        }
+        
+        .action-btn-primary:hover {
+            background: var(--order-type-color);
+            filter: brightness(1.1);
+            transform: var(--transform-slide-up);
+        }
+        
+        .action-btn-secondary {
+            background: var(--uber-white);
+            color: var(--order-type-color);
+            border: 1px solid var(--order-type-color);
+        }
+        
+        .action-btn-secondary:hover {
+            background: var(--order-type-bg-light);
+            transform: var(--transform-slide-up);
+        }
+        
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .order-type-header {
+                padding: var(--spacing-12);
+                margin-bottom: var(--spacing-20);
+            }
+            
+            .ot-order-type-icon {
+                width: 40px;
+                height: 40px;
+                font-size: var(--font-size-18);
+            }
+            
+            .order-type-info h3 {
+                font-size: var(--font-size-16);
+            }
+            
+            .status-step-custom {
+                min-width: 50px;
+				padding: 0px 50px;
+            }
+            
+            .status-step-custom .step-icon {
+                width: 32px;
+                height: 32px;
+                font-size: var(--font-size-12);
+            }
+            
+            .status-step-custom .step-label {
+                font-size: var(--font-size-11);
+                
+            }
+            
+            .info-card {
+                padding: var(--spacing-12);
+            }
+            
+            .action-btn {
+                padding: var(--spacing-14) var(--spacing-16);
+                font-size: var(--font-size-14);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .status-progress-custom {
+                overflow-x: auto;
+                padding-bottom: var(--spacing-32);
+            }
+            
+            .status-step-custom {
+                min-width: 45px;
+				padding: 0px 50px;
+            }
+            
+            .status-step-custom .step-label {
+                font-size: var(--font-size-10);
+                
             }
         }
     </style>
@@ -7363,7 +7664,7 @@
                         </div>
                         
                         <div class="hero-cta">
-                            <a href="#menu" class="btn">
+                            <a href="#our_branches" class="btn">
                                 <span data-translate="view_menu">View Menu</span>
                             </a>
                         </div>
@@ -7371,7 +7672,7 @@
                 </div>
                 
                 <div class="container content-section">
-                    <h2 class="section-title" data-translate="our_branches">Our Branches</h2>
+                    <h2 class="section-title" data-translate="our_branches" id="our_branches">Our Branches</h2>
                     <div class="branches-grid" id="branches-container">
                         <!-- Branches will be dynamically loaded here -->
                     </div>
@@ -7898,6 +8199,10 @@
                         'confirmed': 'Confirmed',
                         'preparing': 'Preparing',
                         'ready': 'Ready',
+                        'served': 'Served',
+                        'picked_up': 'Picked Up',
+                        'out_for_delivery': 'Out for Delivery',
+                        'delivered': 'Delivered',
                         'completed': 'Completed',
                         'cancelled': 'Cancelled',
                         'add_some_delicious_items': 'Add some delicious items to your cart.',
@@ -8063,6 +8368,10 @@
                         'confirmed': 'নিশ্চিত',
                         'preparing': 'প্রস্তুত হচ্ছে',
                         'ready': 'প্রস্তুত',
+                        'served': 'পরিবেশিত',
+                        'picked_up': 'সংগ্রহ করা হয়েছে',
+                        'out_for_delivery': 'ডেলিভারিতে বের হয়েছে',
+                        'delivered': 'ডেলিভার করা হয়েছে',
                         'completed': 'সম্পন্ন',
                         'cancelled': 'বাতিল',
                         'add_some_delicious_items': 'আপনার কার্টে কিছু সুস্বাদু আইটেম যোগ করুন।',
@@ -10720,7 +11029,7 @@
                     
                     // Delivery stat
                     const deliveryStat = securityUtils.createElement('div', '', 'branch-stat');
-                    const truckIcon = securityUtils.createElement('i', '', 'fas fa-truck');
+                    const truckIcon = securityUtils.createElement('i', '', 'fas fa-motorcycle');
                     const deliverySpan = securityUtils.createElement('span', `${deliveryTime} min`);
                     deliveryStat.appendChild(truckIcon);
                     deliveryStat.appendChild(deliverySpan);
@@ -11821,7 +12130,7 @@
                             </div>
                             <div class="order-type-btn" data-type="delivery">
                                 <div class="order-type-icon">
-                                    <i class="fas fa-truck"></i>
+                                    <i class="fas fa-motorcycle"></i>
                                 </div>
                                 <div>${translate('delivery')}</div>
                             </div>
@@ -12483,36 +12792,60 @@
                     }
 
                     const orderData = order.data;
-                    const statusSteps = ['pending', 'confirmed', 'preparing', 'ready', 'completed'];
+                    const orderType = orderData.order_type;
+                    
+                    // Add order type specific class to container
+                    elements.orderTrackingContainer.className = `order-tracking-type-${orderType}`;
+                    
+                    // Get order type specific status steps
+                    const statusSteps = getOrderTypeStatusSteps(orderType);
                     const currentStepIndex = statusSteps.indexOf(orderData.status);
-
+                    
+                    // Get order type specific icon
+                    const orderTypeIcon = getOrderTypeIcon(orderType);
+                    
+                    // Calculate ETA based on order type and status
+                    const etaInfo = calculateOrderETA(orderData);
+                    
                     elements.orderTrackingContainer.innerHTML = `
-                        <div class="order-status">
-                            <h3>${translate('order')} #${orderData.order_uid}</h3>
-                            <div class="status-progress">
-                                ${statusSteps.map((step, index) => `
-                                    <div class="status-step ${index <= currentStepIndex ? 'completed' : ''} ${index === currentStepIndex ? 'active' : ''}">
-                                        <span>${index <= currentStepIndex ? '' : index + 1}</span>
-                                        <div class="step-label">${translate(step)}</div>
-                                    </div>
-                                `).join('')}
+                        <!-- Order Type Header -->
+                        <div class="order-type-header">
+                            <div class="ot-order-type-icon">
+                                <i class="fas ${orderTypeIcon}"></i>
+                            </div>
+                            <div class="order-type-info">
+                                <h3>${translate('order')} #${orderData.order_uid}</h3>
+                                <p>${translate(orderType)} • ${translate(orderData.status)}</p>
                             </div>
                         </div>
                         
+                        <!-- ETA Display -->
+                        ${etaInfo.show ? `
+                        <div class="eta-display">
+                            <div class="eta-label">${etaInfo.label}</div>
+                            <div class="eta-time">${etaInfo.time}</div>
+                        </div>
+                        ` : ''}
+                        
+                        <!-- Order Type Specific Status Flow -->
+                        <div class="status-progress-custom status-flow-${orderType}">
+                            ${statusSteps.map((step, index) => `
+                                <div class="status-step-custom ${index <= currentStepIndex ? 'completed' : ''} ${index === currentStepIndex ? 'active' : ''}">
+                                    <div class="step-icon">
+                                        ${index <= currentStepIndex ? '<i class="fas fa-check"></i>' : index + 1}
+                                    </div>
+                                    <div class="step-label">${translate(step)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <!-- Order Type Specific Information Cards -->
+                        <div class="order-type-info-cards">
+                            ${getOrderTypeSpecificInfoCards(orderData, orderType)}
+                        </div>
+                        
+                        <!-- Order Items -->
                         <div class="order-details">
-                            <h4>${translate('order_details')}</h4>
-                            <div class="order-info">
-                                <p><strong>${translate('order_type')}:</strong> ${translate(orderData.order_type)}</p>
-                                <p><strong>${translate('status')}:</strong> ${translate(orderData.status)}</p>
-                                <p><strong>${translate('placed_at')}:</strong> ${new Date(orderData.created_at).toLocaleString()}</p>
-                                ${orderData.branch_name_translation_key ? `
-                                    <p><strong>${translate('branch')}:</strong> ${getTranslation(orderData.branch_name, orderData.branch_name_translation_key) || orderData.branch_name || translate('unknown_branch')}</p>
-                                ` : orderData.branch_name ? `
-                                    <p><strong>${translate('branch')}:</strong> ${orderData.branch_name}</p>
-                                ` : ''}
-                                ${orderData.table_identifier ? `<p><strong>${translate('table_number')}:</strong> ${orderData.table_identifier}</p>` : ''}
-                            </div>
-                            
                             <h4>${translate('order_items')}</h4>
                             <div class="order-items-list">
                                 ${orderData.items && orderData.items.length > 0 ? orderData.items.map(item => {
@@ -12548,6 +12881,7 @@
                                 }).join('') : '<p class="no-items">No items found</p>'}
                             </div>
                             
+                            <!-- Order Summary -->
                             <div class="order-summary">
                                 <div class="summary-row">
                                     <span>${translate('subtotal')}:</span>
@@ -12581,16 +12915,12 @@
                                     <span>${translate('total')}:</span>
                                     <span>${formatPrice(orderData.final_amount)}</span>
                                 </div>
-                                
-                                ${orderData.status === 'pending' ? `
-                                <div class="order-actions">
-                                    <button class="btn btn-danger" id="cancel-order-btn">
-                                        <i class="fas fa-times"></i>
-                                        ${translate('cancel_order')}
-                                    </button>
-                                </div>
-                                ` : ''}
                             </div>
+                        </div>
+                        
+                        <!-- Order Type Specific Actions -->
+                        <div class="order-type-actions">
+                            ${getOrderTypeSpecificActions(orderData, orderType)}
                         </div>
                     `;
                     
@@ -12604,16 +12934,322 @@
                         }
                     }
                     
-                    // Add feedback section for completed orders
-                    if (orderData.status === 'completed') {
-                        const feedbackSection = document.createElement('div');
-                        feedbackSection.className = 'feedback-section';
-                        feedbackSection.innerHTML = `
+                    // Add order type specific action event listeners
+                    addOrderTypeActionListeners(orderData, orderType);
+                    
+                    // Remove skeleton class after content is loaded
+                    document.getElementById('order-tracking-view').classList.remove('skeleton');
+                }, 300);
+            }
+            
+            // Helper function to get order type specific status steps
+            function getOrderTypeStatusSteps(orderType) {
+                switch(orderType) {
+                    case 'dine-in':
+                        return ['pending', 'confirmed', 'preparing', 'ready', 'served', 'completed'];
+                    case 'takeaway':
+                        return ['pending', 'confirmed', 'preparing', 'ready', 'picked_up', 'completed'];
+                    case 'delivery':
+                        return ['pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'delivered', 'completed'];
+                    default:
+                        return ['pending', 'confirmed', 'preparing', 'ready', 'completed'];
+                }
+            }
+            
+            // Helper function to get order type specific icon
+            function getOrderTypeIcon(orderType) {
+                switch(orderType) {
+                    case 'dine-in':
+                        return 'fa-utensils';
+                    case 'takeaway':
+                        return 'fa-shopping-bag';
+                    case 'delivery':
+                        return 'fa-motorcycle';
+                    default:
+                        return 'fa-receipt';
+                }
+            }
+            
+            // Helper function to calculate order ETA based on type and status
+            function calculateOrderETA(orderData) {
+                const orderType = orderData.order_type;
+                const status = orderData.status;
+                const createdAt = new Date(orderData.created_at);
+                const now = new Date();
+                const elapsedMinutes = Math.floor((now - createdAt) / (1000 * 60));
+                
+                let etaInfo = { show: false, label: '', time: '' };
+                
+                switch(orderType) {
+                    case 'dine-in':
+                        if (status === 'confirmed' || status === 'preparing') {
+                            const remainingTime = Math.max(5, 20 - elapsedMinutes);
+                            etaInfo = {
+                                show: true,
+                                label: 'Estimated serving time',
+                                time: `${remainingTime} mins`
+                            };
+                        } else if (status === 'ready') {
+                            etaInfo = {
+                                show: true,
+                                label: 'Being served to your table',
+                                time: 'Now'
+                            };
+                        }
+                        break;
+                        
+                    case 'takeaway':
+                        if (status === 'confirmed' || status === 'preparing') {
+                            const remainingTime = Math.max(5, 15 - elapsedMinutes);
+                            etaInfo = {
+                                show: true,
+                                label: 'Ready for pickup in',
+                                time: `${remainingTime} mins`
+                            };
+                        } else if (status === 'ready') {
+                            etaInfo = {
+                                show: true,
+                                label: 'Ready for pickup at',
+                                time: 'Counter 3'
+                            };
+                        }
+                        break;
+                        
+                    case 'delivery':
+                        if (status === 'confirmed' || status === 'preparing') {
+                            const remainingTime = Math.max(10, 35 - elapsedMinutes);
+                            etaInfo = {
+                                show: true,
+                                label: 'Estimated delivery time',
+                                time: `${remainingTime} mins`
+                            };
+                        } else if (status === 'out_for_delivery') {
+                            const remainingTime = Math.max(5, 15 - elapsedMinutes);
+                            etaInfo = {
+                                show: true,
+                                label: 'Arriving in',
+                                time: `${remainingTime} mins`
+                            };
+                        }
+                        break;
+                }
+                
+                return etaInfo;
+            }
+            
+            // Helper function to get order type specific information cards
+            function getOrderTypeSpecificInfoCards(orderData, orderType) {
+                const branchName = orderData.branch_name_translation_key ? 
+                    getTranslation(orderData.branch_name, orderData.branch_name_translation_key) : 
+                    orderData.branch_name;
+                
+                switch(orderType) {
+                    case 'dine-in':
+                        return `
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-store"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Restaurant Information</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Branch:</strong> ${branchName || 'Main Branch'}</p>
+                                    ${orderData.table_identifier ? `<p><strong>Table:</strong> ${orderData.table_identifier}</p>` : ''}
+                                    <p><strong>Ordered:</strong> ${new Date(orderData.created_at).toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Dining Service</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Service Type:</strong> Dine-in</p>
+                                    <p><strong>Status:</strong> ${translate(orderData.status)}</p>
+                                    ${orderData.status === 'ready' ? '<p><strong>Note:</strong> Your food is ready and will be served to your table shortly.</p>' : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                    case 'takeaway':
+                        return `
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-store"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Pickup Information</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Branch:</strong> ${branchName || 'Main Branch'}</p>
+                                    <p><strong>Pickup Counter:</strong> Counter 3</p>
+                                    <p><strong>Ordered:</strong> ${new Date(orderData.created_at).toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Pickup Instructions</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Order Type:</strong> Takeaway</p>
+                                    <p><strong>Status:</strong> ${translate(orderData.status)}</p>
+                                    ${orderData.status === 'ready' ? '<p><strong>Ready for pickup!</strong> Please proceed to Counter 3 with your order number.</p>' : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                    case 'delivery':
+                        return `
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Delivery Information</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Delivering to:</strong> ${orderData.delivery_address || 'Address not provided'}</p>
+                                    <p><strong>From:</strong> ${branchName || 'Main Branch'}</p>
+                                    <p><strong>Ordered:</strong> ${new Date(orderData.created_at).toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-motorcycle"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Delivery Service</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Service Type:</strong> Delivery</p>
+                                    <p><strong>Status:</strong> ${translate(orderData.status)}</p>
+                                    ${orderData.status === 'out_for_delivery' ? '<p><strong>Note:</strong> Your order is on the way!</p>' : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                    default:
+                        return `
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <div class="info-card-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <h4 class="info-card-title">Order Information</h4>
+                                </div>
+                                <div class="info-card-content">
+                                    <p><strong>Branch:</strong> ${branchName || 'Main Branch'}</p>
+                                    <p><strong>Order Type:</strong> ${translate(orderType)}</p>
+                                    <p><strong>Status:</strong> ${translate(orderData.status)}</p>
+                                </div>
+                            </div>
+                        `;
+                }
+            }
+            
+            // Helper function to get order type specific actions
+            function getOrderTypeSpecificActions(orderData, orderType) {
+                let actions = '';
+                
+                // Add cancel button for pending orders
+                if (orderData.status === 'pending') {
+                    actions += `
+                        <button class="action-btn action-btn-secondary" id="cancel-order-btn">
+                            <i class="fas fa-times"></i>
+                            ${translate('cancel_order')}
+                        </button>
+                    `;
+                }
+                
+                switch(orderType) {
+                    case 'dine-in':
+                        if (orderData.status === 'confirmed' || orderData.status === 'preparing') {
+                            actions += `
+                                <button class="action-btn action-btn-primary" id="call-waiter-btn">
+                                    <i class="fas fa-concierge-bell"></i>
+                                    Call Waiter
+                                </button>
+                            `;
+                        }
+                        break;
+                        
+                    case 'takeaway':
+                        if (orderData.status === 'ready') {
+                            actions += `
+                                <button class="action-btn action-btn-primary" id="pickup-ready-btn">
+                                    <i class="fas fa-check"></i>
+                                    I'm Here for Pickup
+                                </button>
+                            `;
+                        }
+                        break;
+                        
+                    case 'delivery':
+                        if (orderData.status === 'out_for_delivery') {
+                            actions += `
+                                <button class="action-btn action-btn-primary" id="contact-driver-btn">
+                                    <i class="fas fa-phone"></i>
+                                    Contact Driver
+                                </button>
+                            `;
+                        }
+                        break;
+                }
+                
+                return actions;
+            }
+            
+            // Helper function to add order type specific action listeners
+            function addOrderTypeActionListeners(orderData, orderType) {
+                switch(orderType) {
+                    case 'dine-in':
+                        const callWaiterBtn = document.getElementById('call-waiter-btn');
+                        if (callWaiterBtn) {
+                            callWaiterBtn.addEventListener('click', () => {
+                                showToast('Waiter has been notified. They will be with you shortly.');
+                            });
+                        }
+                        break;
+                        
+                    case 'takeaway':
+                        const pickupReadyBtn = document.getElementById('pickup-ready-btn');
+                        if (pickupReadyBtn) {
+                            pickupReadyBtn.addEventListener('click', () => {
+                                showToast('Please proceed to Counter 3 for pickup.');
+                            });
+                        }
+                        break;
+                        
+                    case 'delivery':
+                        const contactDriverBtn = document.getElementById('contact-driver-btn');
+                        if (contactDriverBtn) {
+                            contactDriverBtn.addEventListener('click', () => {
+                                showToast('Driver contact information would be displayed here.');
+                            });
+                        }
+                        break;
+                }
+            }
+            
+            // Function to create feedback form
+            function createFeedbackForm() {
+                const feedbackSection = document.createElement('div');
+                feedbackSection.className = 'feedback-section';
+                feedbackSection.innerHTML = `
                             <h4>${translate('rate_your_experience')}</h4>
+                            <p>${translate('share_your_experience')}</p>
                             <div class="rating-stars">
-                                ${[1,2,3,4,5].map(i => 
-                                    `<i class="far fa-star" data-rating="${i}"></i>`
-                                ).join('')}
+                                <i class="far fa-star" data-rating="1"></i>
+                                <i class="far fa-star" data-rating="2"></i>
+                                <i class="far fa-star" data-rating="3"></i>
+                                <i class="far fa-star" data-rating="4"></i>
+                                <i class="far fa-star" data-rating="5"></i>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">${translate('service_quality')}</label>
@@ -12674,6 +13310,13 @@
                             </div>
                             <button class="btn" id="submit-feedback">${translate('submit_feedback')}</button>
                         `;
+                        
+                        return feedbackSection;
+            }
+            
+            // Initialize feedback functionality
+            function initializeFeedback() {
+                const feedbackSection = createFeedbackForm();
                         
                         elements.orderTrackingContainer.appendChild(feedbackSection);
                         
@@ -12749,11 +13392,6 @@
                                 showError(translate('feedback_submission_failed'));
                             }
                         });
-                    }
-                    
-                    // Remove skeleton class after content is loaded
-                    document.getElementById('order-tracking-view').classList.remove('skeleton');
-                }, 300); // Minimum 300ms delay to show skeleton
             }
             
             function renderOrderHistory() {
